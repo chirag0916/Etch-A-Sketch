@@ -12,9 +12,11 @@ window.location.reload(false);
 container.appendChild(resetButton).className='reset-button';
 
 //random colour generator
-const setBg = () => {
-  const randomColor = Math.floor(Math.random()*16777215).toString(16);
-  document.body.style.background = "#" + randomColor;
+const setBg = (cell) => {
+  if(cell.style.backgroundColor === "") {
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    cell.style.backgroundColor = "#" + randomColor;
+  }
 }
 
 function makeRows(rows, cols) {
@@ -24,16 +26,18 @@ function makeRows(rows, cols) {
       let cell = document.createElement("div");
       //cell.innerText = (c + 1);
       container.appendChild(cell).className = "grid-item";
-      cell.addEventListener('mouseover', setBg);
+      cell.addEventListener('mouseover', function(event) {
+        setBg(event.target);
+      });
       cell.addEventListener("mouseover", function( event ) {   
         // highlight the mouseover target
-        var that = event.target;
-        that.style.backgroundColor = "black";    
+        let that = event.target;
         if(parseFloat(that.style.opacity)) {
           that.style.opacity = parseFloat(that.style.opacity) + 0.2;
         } else {
           that.style.opacity = 0.2;
         }
+        
     
         // reset the color after a short delay
         setTimeout(function() {
